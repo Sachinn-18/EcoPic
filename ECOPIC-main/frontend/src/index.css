@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================= */
+/* 🌗 GLOBAL THEME VARIABLES                 */
+/* ========================================= */
+:root {
+  --bg: #f8f9fa;              /* page background */
+  --surface: #ffffff;         /* card & navbar */
+  --text: #0f172a;            /* normal text */
+  --muted: #6b7280;           /* subtle text */
+  --border: rgba(0, 0, 0, 0.08);
+  --accent: #16a34a;          /* green */
+  --pill-text: #ffffff;
+  --card-shadow: 0 10px 30px rgba(2,6,23,0.08);
+}
+
+.dark {
+  --bg: #0d1117;              /* main dark bg */
+  --surface: #161b22;         /* cards + navbar */
+  --text: #e6eef6;
+  --muted: #94a3b8;
+  --border: rgba(255,255,255,0.08);
+  --accent: #22c55e;
+  --pill-text: #ffffff;
+  --card-shadow: 0 6px 20px rgba(0,0,0,0.55);
+}
+
+/* ========================================= */
+/* 🌙 DARK MODE ECO GLOW BACKGROUND          */
+/* ========================================= */
+.dark body {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(0,255,150,0.08),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(0,220,140,0.06),
+      transparent 55%
+    ),
+    var(--bg);
+}
+
+/* Light mode background */
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* ========================================= */
+/* BASE LAYER                                */
+/* ========================================= */
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+
+  .text-site { color: var(--text); }
+  .text-site-muted { color: var(--muted); }
+}
+@layer base {
+  /* Override Tailwind white/light backgrounds in dark mode */
+  .dark .bg-white,
+  .dark .bg-gray-50,
+  .dark .bg-gray-100 {
+    background-color: var(--surface) !important;
+  }
+
+  /* Page background wrapper should follow theme */
+  .page-bg,
+  .feed-container,
+  .content-wrapper,
+  main {
+    background: var(--bg) !important;
+    transition: background 0.3s ease;
+  }
+}
+/* ========================================= */
+/* COMPONENTS                                */
+/* ========================================= */
+@layer components {
+  .glass {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark .glass {
+  background: rgba(15, 23, 42, 0.35); /* dark frosted */
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+  /* --- reusable cards --- */
+  .card {
+    background: var(--surface);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+    box-shadow: var(--card-shadow);
+    transition: background 250ms ease, box-shadow 250ms ease, transform 180ms ease;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(2,6,23,0.08);
+  }
+
+  .dark .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.55);
+  }
+
+  /* --- navbar container --- */
+  .navbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--card-shadow);
+    transition: background 250ms ease, border-color 250ms ease;
+  }
+
+  /* --- nav pill --- */
+  .nav-pill {
+    @apply inline-flex items-center px-4 py-1 rounded-full transition-all duration-300 shadow-sm;
+    background: linear-gradient(90deg,
+      rgba(34,197,94,0.12),
+      rgba(16,185,129,0.06)
+    );
+    color: var(--text);
+  }
+
+  .nav-pill.active {
+    background: linear-gradient(
+      90deg,
+      var(--accent),
+      rgba(16,185,129,0.85)
+    );
+    color: var(--pill-text) !important;
+    box-shadow: 0 6px 18px rgba(16,185,129,0.18);
+  }
+
+  /* --- Buttons --- */
+  .btn-primary {
+    @apply text-white font-medium py-2 px-4 rounded-lg transition-colors;
+    background-color: var(--accent);
+  }
+
+  .btn-primary:hover {
+    filter: brightness(0.92);
+  }
+
+  .btn-secondary {
+    @apply bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors;
+  }
+
+  /* animated page container */
+  .page-animated {
+    transition: background-color 280ms ease, color 280ms ease;
+    will-change: background-color, color;
+  }
+}
+/* ----------------------------------------------- */
+/* 🌟 Navbar Active Pill Sliding Animation         */
+/* ----------------------------------------------- */
+
+.nav-pill-container {
+  position: relative;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-pill {
+  position: relative;
+  z-index: 5;
+  padding: 0.55rem 1.3rem;
+  border-radius: 999px;
+  font-weight: 500;
+  transition: color 250ms ease;
+}
+
+.nav-pill.active {
+  color: white !important;
+}
+
+/* Sliding background element */
+.nav-pill-slider {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), width 250ms;
+  z-index: 1;
+}
+
